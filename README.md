@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lens Aura — website demo
 
-## Getting Started
+Eyewear boutique site for Lens Aura, Edachira Jn, Kakkanad. Phone-first, "Liquid Glass" design,
+fully static (no backend) so it runs on GitHub Pages.
 
-First, run the development server:
+## How it works in the shop
+
+- **Store QR** (poster at the counter) → opens the catalogue (`/shop/`).
+- **Frame QR** (label next to each frame) → opens that frame's page (`/p/LA-1001/`).
+  The code (`LA-1001`) is permanent, so printed labels keep working when prices or photos change.
+- Print labels and the poster from **`/admin/qr/`**.
+- The cart lives in the customer's browser; orders and eye-test bookings are sent as a pre-filled
+  WhatsApp message.
+
+## Editing content
+
+| What | Where |
+| --- | --- |
+| Frames, prices, colours, photos | `src/data/products.ts` |
+| Address, phone, hours, WhatsApp number | `src/lib/store.ts` |
+| Lens options and prices | `src/lib/lenses.ts` |
+| Photos | `public/images/` (stock photo credits in `public/images/CREDITS.md`) |
+
+Never change or reuse a frame's `sku` once its label is printed. Add a new frame with a new code instead.
+
+## Run locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # static site in ./out
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deploy (GitHub Pages)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Push this folder to a GitHub repository (branch `main`).
+2. In the repo: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+3. Every push to `main` builds and publishes to `https://<user>.github.io/<repo>/`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Before going live
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Set `whatsapp` in `src/lib/store.ts` (empty in the demo so test orders don't reach the shop).
+- Confirm opening hours.
+- Replace the demo stock photos in `public/images/p/` with photos of the shop's own frames.
+- Connect a payment gateway (e.g. Razorpay) if online payment is wanted. That needs a small backend
+  or a hosted checkout link.
